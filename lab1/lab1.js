@@ -17,13 +17,19 @@ function initAutocomplete() {
         map: map,
     });
 
+    // Geocoder
+    
+    let geocoder = new google.maps.Geocoder();
+
+    document.getElementById('submit').addEventListener('click', function() {
+        geocodeAddress(geocoder, map);
+    });
+
     // Create search box and link to UI element
-    let input = document.getElementById('pac_input');
-    console.log(input);
-    console.log(google.maps);
-    console.log(google.maps.places);
+    let input = document.getElementById('address');
+    
     let searchBox = new google.maps.places.SearchBox(input);
-    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    // map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     // Bias the searchbox results toward map's viewport
     map.addListener('bounds_changed', function() {
@@ -75,3 +81,19 @@ function initAutocomplete() {
         map.fitBounds(bounds);
     });
 }
+
+function geocodeAddress(geocoder, resultsMap) {
+    let input1 = document.getElementById('address').value;
+    console.log(input1);
+    geocoder.geocode({'address': input1}, function(results, status) {
+      if (status === 'OK') {
+        resultsMap.setCenter(results[0].geometry.location);
+        let marker = new google.maps.Marker({
+          map: resultsMap,
+          position: results[0].geometry.location,
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
