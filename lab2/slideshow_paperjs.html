@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <style>
+      @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+      @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+      body { font-family: 'Droid Serif'; }
+      h1, h2, h3 {
+        font-family: 'Yanone Kaffeesatz';
+        font-weight: normal;
+      }
+      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+    </style>
+  </head>
+  <body>
+    <textarea id="source">
+
+class: center, middle
+
+# Title
+
+---
+
+# Agenda
+
+1. Introduction
+2. Deep-dive
+3. ...
+
+---
+<img src="https://cms-assets.tutsplus.com/uploads/users/1251/posts/26481/preview_image/PaperJS.jpg" width="200" align="right">
+# Introduction
+
+Paper.js is an open source vector graphics scripting framework that runs on top of the HTML5 Canvas.
+
+It offers a clean Scene Graph / Document Object Model and a lot of powerful functionality to create and work with vector graphics and bezier curves, 
+all neatly wrapped up in a well designed, consistent and clean programming interface.
+
+---
+#Properties
+
+####Global PaperScript Properties:
+project, projects, view, tool, tools
+
+####PaperScript View Event Handlers:
+onFrame, onResize
+
+####PaperScript Tool Event Handlers:
+onMouseDown, onMouseDrag, onMouseMove, onMouseUp
+
+####Keyboard Event Handlers (for PaperScript):
+onKeyDown, onKeyUp
+
+---
+#Index
+####[Basic Types]: Point, Size, Rectangle, Matrix
+####[Project & Items]: Project, Item, Layer, Group, Shape, Raster, HitResult, 
+####[Paths]: PathItem, Path, CompoundPath, Segment, Curve, CurveLocation
+####[Symbols]: SymbolDefinition, SymbolItem
+####[Styling]: Style, Color, Gradient, GradientStop
+####[Typography]: TextItem, PointText
+####[User Interaction & Events]: View, Event, MouseEvent, Tool, ToolEvent, Key, KeyEvent
+####[JavaScript]: PaperScope, PaperScript
+
+---
+#Configuration
+
+1. Load the Paper.js library:
+```javascript
+<script type="text/javascript" src="paper.js/dist/paper-full.js"></script>
+```
+2. Define inlined PaperScript associate it with myCanvas:
+```javascript
+<canvas id="myCanvas" width="900" height="400" resize></canvas>
+<script type="text/paperscript" canvas="myCanvas">
+```
+
+---
+#Code example: 1st layout mouse event
+```javascript
+//Drawing rectangle function 
+var mousePoint = view.center;
+var amount = 25;
+var colors = ['red', 'white', 'blue', 'white'];
+var count = 0;
+for (var i = 0; i < amount; i++) {
+  var rect = new Rectangle([0, 0], [25, 25]);
+  rect.center = mousePoint;
+  var path = new Path.Rectangle(rect, 3);
+  path.fillColor = colors[i % 4];
+  var scale = (1 - i / amount) * 10;
+  path.scale(scale);
+}
+//Declare Mouse event
+function onMouseMove(event) {
+  mousePoint = event.point;
+}
+//Frame for animation
+var children = project.activeLayer.children;
+function onFrame(event) {
+  for (var i = 0, l = children.length; i < l; i++) {
+    var item = children[i];
+    var delta = (mousePoint - item.position) / (i + 5);
+    item.rotate(Math.sin((event.count + i) / 10) * 7);
+    if (delta.length > 0.1)
+      item.position += delta;
+  }
+}
+```
+---
+#Code example: 2nd layout keyboard event
+```javascript
+// Create a new layer and activate it:
+		var secondLayer = new Layer();
+// The starting position of the line
+var position = new Point(100, 100);
+// The amount we will move when one of the keys is pressed:
+var step = 10;
+var path = new Path();
+path.strokeColor = 'black';
+path.add(position);
+path.strokeWidth = 15;
+//Mouse press to hide 2nd layer
+function onMouseDown(event) {
+  count += 1;
+  if(count%2 == 0){
+    path.opacity = '1';
+  }else{
+    path.opacity = '0'; //this makes the last path used completely see through	
+  }      
+}
+//Key event
+function onKeyDown(event) {
+  if(event.key == 'left') {
+    position.x -= step;
+  }
+  //Similar for other keys 
+  path.add(position);
+}
+```
+
+
+
+
+    </textarea>
+    <script src="https://remarkjs.com/downloads/remark-latest.min.js">
+    </script>
+    <script>
+      var slideshow = remark.create();
+    </script>
+  </body>
+</html>
+
