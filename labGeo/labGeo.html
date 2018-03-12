@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    </head>
+    <style>
+        #map {
+            height: 400px;
+            width: 100%;
+        }
+    </style>
+    <body>
+        <div class="item"><button id="clickButton">Get near by</button></div>
+        <div id="lng"></div>
+        <div id="lat"></div>
+        <div id="map"></div>
+
+        <script type="text/javascript" async defer>
+        var long = 131.044;
+        var latitude = -25.363;
+        var markers = [latitude,long];
+        console.log(long);
+            function initMap() {                
+                console.log("map is called");                
+                let uluru = new google.maps.LatLng({lat: latitude, lng: long});
+                let map = new google.maps.Map(document.getElementById('map'), {
+                    zoom: 5,
+                    center: uluru,
+                });
+
+                for (i = 0; i < markers.length; i=i+2) {
+                    console.log(markers[i], markers[i+1]);
+                        let marker = new google.maps.Marker({
+                        zoom: 18,
+                        position: new google.maps.LatLng(markers[i], markers[i+1]),
+                        map: map
+                    });
+                }
+
+                // let marker = new google.maps.Marker({
+                //     zoom: 10,
+                //     position: uluru,
+                //     map: map,
+                // });
+                
+            }
+        
+                $('#clickButton').click(onClick);
+        
+                function onClick() { 
+                $(document).ready(function(){
+                    $.ajax({
+                        url: 'http://api.geonames.org/findNearbyWikipediaJSON?postalcode=8775&country=CH&radius=10&username=nickvo',
+                        type: 'GET',
+                        
+                        success: function(obj){
+                            console.log(obj.geonames);
+                            markers = [];                         
+                            
+                            obj.geonames.forEach(element => {                                                               
+                                long = element.lng;
+                                latitude = element.lat;
+                                markers.push.apply(markers, [latitude,long])                                                                
+                                console.log(long);
+                                console.log(markers);
+                                $("#lng").append("lng: " + element.lng);
+                                $("#lat").append("lat: " + element.lat);                                
+                            });
+
+                            initMap();
+                            
+                            
+                        }          
+                    });
+
+                });  
+        }
+        </script>
+        
+        <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2yshFo61uXWl6sHyGLONWZDdkpIfpEm0&libraries=places&callback=initMap"> 
+        </script>
+
+    </body>
+    
+    
+
+
+</html>
+

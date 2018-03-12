@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>slider demo</title>
+  <link rel="stylesheet" href="main.css">
+  <style>#slider { margin: 10px; }	</style>
+  <script src="http://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> 
+  <script src="slideshow.js"></script>
+  
+</head>
+<body>
+ 
+<div id="slider">
+    <ul class="slides">
+        <li class="slide slide1">slide1</li>
+        <li class="slide slide2">slide2</li>
+        <li class="slide slide3">slide3</li>
+        <li class="slide slide4">slide4</li>
+        <li class="slide slide5">slide5</li>
+        <li class="slide slide1">slide1</li>
+    </ul>
+</div>
+ 
+<script>
+$( "#slider" ).slider();
+</script>
+ 
+</body>
+</html>

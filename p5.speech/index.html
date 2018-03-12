@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1"/>
+	<title>Speech Recognition</title>
+	
+    <script type="text/javascript" src="code.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/p5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.4.5/addons/p5.dom.js"></script>
+    <script src="lib/p5.speech.js"></script>
+	
+</head>
+<body>
+	<h1>Say Something...</h1>
+	<h4>Works only with google chrome browser<h4>
+    <div><button id="listen" onclick="listen()">Click to listen again</button></div>
+    <p id="p1"></p>
+
+        <style>
+            html {
+                font: 0.75em/1.5em Arial, "Helvetica CY", "Nimbus Sans L", sans-serif;
+            }
+            .bx {
+                width: 100%;
+                display: block;
+                margin: 10px 0;
+                padding: 10px;
+                border: 1px dashed #000;
+                -moz-box-sizing: border-box;
+                box-sizing: border-box;
+            }
+        </style>           
+
+            <!-- <p>Source</p>
+            <textarea id="source" class="bx">The quick brown fox jumps over the lazy dog
+            </textarea> -->
+            <select name="to" id="lang">
+                <option value="az">az</option>
+                <option value="sq">sq</option>
+                <option value="en">en</option>
+                <option value="hy">hy</option>
+                <option value="be">be</option>
+                <option value="bg">bg</option>
+                <option value="hu">hu</option>
+                <option value="nl">nl</option>
+                <option value="el">el</option>
+                <option value="da">da</option>
+                <option value="es">es</option>
+                <option value="it">it</option>
+                <option value="ca">ca</option>
+                <option value="lv">lv</option>
+                <option value="lt">lt</option>
+                <option value="mk">mk</option>
+                <option value="de">de</option>
+                <option value="no">no</option>
+                <option value="pl">pl</option>
+                <option value="pt">pt</option>
+                <option value="ro">ro</option>
+                <option value="ru">ru</option>
+                <option value="sr">sr</option>
+                <option value="sk">sk</option>
+                <option value="sl">sl</option>
+                <option value="tr">tr</option>
+                <option value="uk">uk</option>
+                <option value="fi" selected="selected">fi</option>
+                <option value="fr">fr</option>
+                <option value="hr">hr</option>
+                <option value="cs">cs</option>
+                <option value="sv">sv</option>
+                <option value="et">et</option>
+                <option value="vi">vi</option>
+                <option value="ja">ja</option>
+            </select>
+            <!-- <button id="translate">Translate</button> -->
+            <p>json</p>
+            <div id="json" class="bx"></div>
+            <p>Output</p>
+            <div id="output" class="bx"></div>
+
+            <script>
+            var url = "https://translate.yandex.net/api/v1.5/tr.json/translate",
+            keyAPI = "trnsl.1.1.20180125T172418Z.f744297933a82993.807c61e576fb9f793fe3d7c2fdb67602f9a1c857";
+            var oldStr;
+            var tranStr;            
+
+            document.querySelector('#listen').addEventListener('click', function() {
+                var myVar = setInterval(myTimer, 8000);             
+                function myTimer(){
+                    var xhr = new XMLHttpRequest(),
+                    textAPI = document.getElementById("p1").innerHTML;
+                    console.log(textAPI); 
+                    
+                    //comparing old and new string
+                    if(textAPI != oldStr) {
+                        //textAPI = document.querySelector('#source').value,
+                        langAPI = document.querySelector('#lang').value
+                        data = "key="+keyAPI+"&text="+textAPI+"&lang="+langAPI;
+                        xhr.open("POST",url,true);
+                        xhr.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+                        xhr.send(data);
+                        console.log(data);
+                        xhr.onreadystatechange = function() {
+                            if (this.readyState==4 && this.status==200) {
+                                var res = this.responseText;
+                                document.querySelector('#json').innerHTML = res;
+                                var json = JSON.parse(res);
+                                if(json.code == 200) {
+                                    tranStr = json.text[0]
+                                    document.querySelector('#output').innerHTML = tranStr;
+                                }
+                                else {
+                                    document.querySelector('#output').innerHTML = "Error Code: " + json.code;
+                                }
+                            }
+                        }
+                    
+                        oldStr = textAPI;
+
+                        
+
+                    }                   
+                
+                clearInterval(myVar);
+
+                }
+                    
+                }, false);
+
+            </script>        
+    </body>
+
+
+</html>

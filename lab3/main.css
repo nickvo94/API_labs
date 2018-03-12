@@ -1,0 +1,44 @@
+/* #imageContainer is a div element which will contain slideshow's images */
+#imageContainer {
+    background: black;
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+/* With > sign you can access elements inside some other element */
+#imageContainer > img {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    max-width: 280px;
+    max-height: 280px;
+}
+
+#slider {
+    width: 720px;
+    height: 400px;
+    overflow: hidden;
+}
+
+#slider .slides {
+    display: block;
+    width: 6000px;
+    height: 400px;
+    margin: 0;
+    padding: 0;
+}
+
+#slider .slide {
+    float: left;
+    list-style-type: none;
+    width: 720px;
+    height: 400px;
+}
+
+/* helper css, since we don't have images */
+.slide1 {background: red;}
+.slide2 {background: blue;}
+.slide3 {background: green;}
+.slide4 {background: purple;}
+.slide5 {background: pink;}

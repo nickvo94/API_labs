@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>attr demo</title>
+  <style>
+  /* #imageContainer is a div element which will contain slideshow's images */
+.imageContainer {
+    background: black;
+    position: relative;
+    width: 300px;
+    height: 300px;
+}
+
+/* With > sign you can access elements inside some other element */
+.imageContainer > img {
+    position: absolute;
+    left: 10px;
+    top: 10px;
+    max-width: 280px;
+    max-height: 280px;
+}
+
+
+#map {
+    height: 400px;
+    width: 100%;
+}
+  </style>
+  <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+</head>
+
+
+<body>
+
+<button id="showr">Show</button>
+<button id="hidr">Hide</button>
+<button id="clear">Clear</button>
+<div class="imageContainer"></div>
+ 
+<script src="trial.js"></script>
+
+<div id="lng"></div>
+<div id="lat"></div>
+<div id="map"></div>
+
+<script type="text/javascript" async defer>
+var long = 131.044;
+var latitude = -25.363;
+var markers = [latitude,long];
+var oldVal = 0;
+console.log(long);
+    function initMap() {
+        latitude = Number( lat[count]),
+        long = Number( lng[count]),                
+        console.log("map is called");                
+        let uluru = new google.maps.LatLng({lat: latitude, lng: long});
+        let map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 5,
+            center: uluru,
+        });
+
+        //for (i = 0; i < count; i=i+1) {
+            //console.log(lat[i], lng[i]);
+        
+        let marker = new google.maps.Marker({
+        zoom: 18,
+        center: uluru,
+        //position: new google.maps.LatLng(markers[i], markers[i+1]),
+        position: new google.maps.LatLng(latitude, long),
+        map: map,
+        });
+
+        
+        console.log(latitude),
+        console.log(long)
+
+        setBound(map);
+        //}
+    }
+
+    function setBound(map){
+      var bounds = new google.maps.LatLngBounds();
+      var myLatLng = new google.maps.LatLng(latitude, long);
+      bounds.extend(myLatLng);
+      map.fitBounds(bounds);
+      var listener = google.maps.event.addListener(map, "idle", function() { 
+      if (map.getZoom() > 12) map.setZoom(12); 
+      google.maps.event.removeListener(listener); 
+    });
+
+    }
+    
+
+        $('#showr').click(onClick);
+
+        function onClick() {
+          console.log('button press') 
+        $(document).ready(function(){  
+
+            initMap()
+
+        });  
+}
+</script>
+
+<script async defer
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA2yshFo61uXWl6sHyGLONWZDdkpIfpEm0&libraries=places&callback=initMap"> 
+</script>
+ 
+</body>
+</html>
